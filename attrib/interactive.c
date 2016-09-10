@@ -598,7 +598,8 @@ static void cmd_connect(int argcp, char **argvp)
         }
 
         server.sin_family = AF_INET;
-        host = gethostbyname("192.168.1.16");
+        host = gethostbyname("localhost");
+
         if(host == 0) {
                 perror("Get host name failed...");
                 exit(1);
@@ -608,7 +609,7 @@ static void cmd_connect(int argcp, char **argvp)
         if(connect(sock, (struct sockaddr*) &server, sizeof(server)) < 0) {
                 perror("Connection failed...");
                 exit(1);
-        }
+	}
 	else printf (" Connection succesfull\n");
 
 }
@@ -726,7 +727,9 @@ static void cmd_char(int argcp, char **argvp)
 
 
 
-if (conn_state != STATE_CONNECTED) {
+static void cmd_char_desc(int argcp, char **argvp)
+{
+	if (conn_state != STATE_CONNECTED) {
 		failed("Disconnected\n");
 		return;
 	}

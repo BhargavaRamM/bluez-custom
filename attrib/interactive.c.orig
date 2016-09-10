@@ -725,8 +725,9 @@ static void cmd_char(int argcp, char **argvp)
 }
 
 
-
-if (conn_state != STATE_CONNECTED) {
+static void cmd_char_desc(int argcp, char **argvp)
+{
+	if (conn_state != STATE_CONNECTED) {
 		failed("Disconnected\n");
 		return;
 	}

@@ -35,7 +35,7 @@
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<netdb.h>
-#include<
+#include<time.h>
 #include <glib.h>
 
 #include "lib/bluetooth.h"
@@ -132,6 +132,14 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 	switch (pdu[0]) {
 	case ATT_OP_HANDLE_NOTIFY:
 		g_print("Notification handle = 0x%04x value at handle is : ", handle);
+
+		buff[0]  = (len &0xFF);
+	        buff[1] = (len >> 8) & 0x00FF;
+                for (i = 2; i < len; i++){
+                  buff[i] = pdu[i];
+                  g_print ("%02x ",buff[i]);
+                }
+
 		break;
 	case ATT_OP_HANDLE_IND:
 		g_print("Indication   handle = 0x%04x value: ", handle);
@@ -145,12 +153,12 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 		g_print("%02x ", pdu[i]);
 
 	g_print("\n");
-
+/*
 	for (i = 0; i < len; i++){
 	  buff[i] = pdu[i];
 	  g_print ("%02x ",buff[i]);
 	}
-	/*
+*/	/*
    	if(battery != 0) {
 		buff[14] = battery;
 	}
@@ -326,12 +334,12 @@ static gboolean characteristics(gpointer user_data)
 }
 
 static void char_read_cb(guint8 status, const guint8 *pdu, guint16 plen,
-							gpointer user_data)
+		 					gpointer user_data)
 {
 	uint8_t value[plen];
 	ssize_t vlen;
 	int i;
-
+	uint16_t hnd;
 	if (status != 0) {
 		g_printerr("Characteristic value/descriptor read failed: %s\n",
 							att_ecode2str(status));
@@ -347,7 +355,11 @@ static void char_read_cb(guint8 status, const guint8 *pdu, guint16 plen,
 	//g_print("Length here is %02x:\n", vlen);
 	for (i = 0; i < vlen; i++)
 		g_print("%02x ", value[i]);
+	/*To get battery level... We need to check the handle at pdu[1] against the handle defined above */
+	hnd = get_le16(&pdu[1]);
+	if ( hnd == BATTERY_LEVEL_HANDLE ) {
 	battery = value[0]; // This will give the battery value.
+	}
 	g_print("\n");
 	
 
