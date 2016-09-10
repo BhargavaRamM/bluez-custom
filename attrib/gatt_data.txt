@@ -1,0 +1,84 @@
+Script started on Wed 07 Sep 2016 22:01:25 UTC
+]0;pi@raspberrypi: ~/Downloads/bluez-5.41/attrib[01;32mpi@raspberrypi[00m:[01;34m~/Downloads/bluez-5.41/attrib $[00m ./fa[K[Kgatttool -b 68:9E:19:1F:C1:61 --char-write-req -a 0x0013 0[K-n 0100 --listen
+Characteristic value was written successfully
+Notification handle = 0x0012 value at handle is : 03 8b 0d 00 00 23 27 b4 0e 07 27 
+1b 12 00 03 8b 0d 00 00 23 27 b4 0e 07 27 Data sent
+Notification handle = 0x0012 value at handle is : 03 8d 0d 00 00 c9 2e b6 0e b6 2e 
+1b 12 00 03 8d 0d 00 00 c9 2e b6 0e b6 2e Data sent
+Notification handle = 0x0012 value at handle is : 03 8e 0d 00 00 72 31 b7 0e 61 31 
+1b 12 00 03 8e 0d 00 00 72 31 b7 0e 61 31 Data sent
+Notification handle = 0x0012 value at handle is : 03 90 0d 00 00 36 36 b9 0e 24 36 
+1b 12 00 03 90 0d 00 00 36 36 b9 0e 24 36 Data sent
+Notification handle = 0x0012 value at handle is : 03 92 0d 00 00 15 3b bb 0e 04 3b 
+1b 12 00 03 92 0d 00 00 15 3b bb 0e 04 3b Data sent
+Notification handle = 0x0012 value at handle is : 03 93 0d 00 00 92 3d bc 0e 7f 3d 
+1b 12 00 03 93 0d 00 00 92 3d bc 0e 7f 3d Data sent
+Notification handle = 0x0012 value at handle is : 03 95 0d 00 00 e0 42 be 0e cc 42 
+1b 12 00 03 95 0d 00 00 e0 42 be 0e cc 42 Data sent
+Notification handle = 0x0012 value at handle is : 03 96 0d 00 00 b9 45 bf 0e a4 45 
+1b 12 00 03 96 0d 00 00 b9 45 bf 0e a4 45 Data sent
+Notification handle = 0x0012 value at handle is : 03 98 0d 00 00 2a 4b c1 0e 18 4b 
+1b 12 00 03 98 0d 00 00 2a 4b c1 0e 18 4b Data sent
+Notification handle = 0x0012 value at handle is : 03 99 0d 00 00 88 4d c2 0e 77 4d 
+1b 12 00 03 99 0d 00 00 88 4d c2 0e 77 4d Data sent
+Notification handle = 0x0012 value at handle is : 03 9b 0d 00 00 ff 51 c4 0e ee 51 
+1b 12 00 03 9b 0d 00 00 ff 51 c4 0e ee 51 Data sent
+Notification handle = 0x0012 value at handle is : 03 9d 0d 00 00 4b 56 c6 0e 3c 56 
+1b 12 00 03 9d 0d 00 00 4b 56 c6 0e 3c 56 Data sent
+Notification handle = 0x0012 value at handle is : 03 9f 0d 00 00 68 5a c8 0e 59 5a 
+1b 12 00 03 9f 0d 00 00 68 5a c8 0e 59 5a Data sent
+Notification handle = 0x0012 value at handle is : 03 a1 0d 00 00 7b 5e ca 0e 6c 5e 
+1b 12 00 03 a1 0d 00 00 7b 5e ca 0e 6c 5e Data sent
+Notification handle = 0x0012 value at handle is : 03 a3 0d 00 00 5d 62 cc 0e 50 62 
+1b 12 00 03 a3 0d 00 00 5d 62 cc 0e 50 62 Data sent
+Notification handle = 0x0012 value at handle is : 03 a5 0d 00 00 26 66 ce 0e 18 66 
+1b 12 00 03 a5 0d 00 00 26 66 ce 0e 18 66 Data sent
+Notification handle = 0x0012 value at handle is : 03 a7 0d 00 00 25 6a d0 0e 16 6a 
+1b 12 00 03 a7 0d 00 00 25 6a d0 0e 16 6a Data sent
+Notification handle = 0x0012 value at handle is : 03 a9 0d 00 00 03 6e d2 0e f6 6d 
+1b 12 00 03 a9 0d 00 00 03 6e d2 0e f6 6d Data sent
+Notification handle = 0x0012 value at handle is : 03 ab 0d 00 00 97 71 d4 0e 8a 71 
+1b 12 00 03 ab 0d 00 00 97 71 d4 0e 8a 71 Data sent
+Notification handle = 0x0012 value at handle is : 03 ae 0d 00 00 a9 76 d7 0e 9d 76 
+1b 12 00 03 ae 0d 00 00 a9 76 d7 0e 9d 76 Data sent
+Notification handle = 0x0012 value at handle is : 03 b0 0d 00 00 ee 79 d9 0e e3 79 
+1b 12 00 03 b0 0d 00 00 ee 79 d9 0e e3 79 Data sent
+Notification handle = 0x0012 value at handle is : 03 b3 0d 00 00 fe 7e dc 0e f1 7e 
+1b 12 00 03 b3 0d 00 00 fe 7e dc 0e f1 7e Data sent
+Notification handle = 0x0012 value at handle is : 03 b5 0d 00 00 8d 82 de 0e 80 82 
+1b 12 00 03 b5 0d 00 00 8d 82 de 0e 80 82 Data sent
+Notification handle = 0x0012 value at handle is : 03 b7 0d 00 00 48 86 e0 0e 3a 86 
+1b 12 00 03 b7 0d 00 00 48 86 e0 0e 3a 86 Data sent
+Notification handle = 0x0012 value at handle is : 03 b9 0d 00 00 36 8a e2 0e 27 8a 
+1b 12 00 03 b9 0d 00 00 36 8a e2 0e 27 8a Data sent
+Notification handle = 0x0012 value at handle is : 03 bb 0d 00 00 5f 8e e4 0e 50 8e 
+1b 12 00 03 bb 0d 00 00 5f 8e e4 0e 50 8e Data sent
+Notification handle = 0x0012 value at handle is : 03 bd 0d 00 00 cc 92 e6 0e bb 92 
+1b 12 00 03 bd 0d 00 00 cc 92 e6 0e bb 92 Data sent
+Notification handle = 0x0012 value at handle is : 03 be 0d 00 00 20 95 e7 0e 0f 95 
+1b 12 00 03 be 0d 00 00 20 95 e7 0e 0f 95 Data sent
+Notification handle = 0x0012 value at handle is : 03 c0 0d 00 00 0c 9a e9 0e fa 99 
+1b 12 00 03 c0 0d 00 00 0c 9a e9 0e fa 99 Data sent
+Notification handle = 0x0012 value at handle is : 03 c1 0d 00 00 ab 9c ea 0e 97 9c 
+1b 12 00 03 c1 0d 00 00 ab 9c ea 0e 97 9c Data sent
+Notification handle = 0x0012 value at handle is : 03 c3 0d 00 00 4c a2 ec 0e 36 a2 
+1b 12 00 03 c3 0d 00 00 4c a2 ec 0e 36 a2 Data sent
+Notification handle = 0x0012 value at handle is : 03 c4 0d 00 00 5a a5 ed 0e 43 a5 
+1b 12 00 03 c4 0d 00 00 5a a5 ed 0e 43 a5 Data sent
+Notification handle = 0x0012 value at handle is : 03 c5 0d 00 00 9b a8 ee 0e 82 a8 
+1b 12 00 03 c5 0d 00 00 9b a8 ee 0e 82 a8 Data sent
+Notification handle = 0x0012 value at handle is : 03 c6 0d 00 00 16 ac ef 0e fc ab 
+1b 12 00 03 c6 0d 00 00 16 ac ef 0e fc ab Data sent
+Notification handle = 0x0012 value at handle is : 03 c7 0d 00 00 d9 af f0 0e bd af 
+1b 12 00 03 c7 0d 00 00 d9 af f0 0e bd af Data sent
+Notification handle = 0x0012 value at handle is : 03 c8 0d 00 00 f6 b3 f1 0e d7 b3 
+1b 12 00 03 c8 0d 00 00 f6 b3 f1 0e d7 b3 Data sent
+Notification handle = 0x0012 value at handle is : 03 c9 0d 00 00 8d b8 f2 0e 6a b8 
+1b 12 00 03 c9 0d 00 00 8d b8 f2 0e 6a b8 Data sent
+Notification handle = 0x0012 value at handle is : 03 ca 0d 00 00 dd bd f3 0e b5 bd 
+1b 12 00 03 ca 0d 00 00 dd bd f3 0e b5 bd ]0;pi@raspberrypi: ~/Downloads/bluez-5.41/attrib[01;32mpi@raspberrypi[00m:[01;34m~/Downloads/bluez-5.41/attrib $[00m 
+]0;pi@raspberrypi: ~/Downloads/bluez-5.41/attrib[01;32mpi@raspberrypi[00m:[01;34m~/Downloads/bluez-5.41/attrib $[00m 
+]0;pi@raspberrypi: ~/Downloads/bluez-5.41/attrib[01;32mpi@raspberrypi[00m:[01;34m~/Downloads/bluez-5.41/attrib $[00m exit
+exit
+
+Script done on Wed 07 Sep 2016 22:03:03 UTC
