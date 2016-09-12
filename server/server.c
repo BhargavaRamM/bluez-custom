@@ -59,6 +59,7 @@ void generate_html_page() {
   fprintf (fp,"<br> <p>\n");
   
   fprintf (fp,"<head>\n");
+  fprintf (fp,"<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\"> \n");
   fprintf (fp,"<style>\n");
   fprintf (fp,"<center>\n");
   fprintf (fp,"table, th, td {\n");
