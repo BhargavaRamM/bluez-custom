@@ -10,10 +10,6 @@
 //#include <netdb.h>
 #include "util.h"
 
-#define BATTERY_LEVEL_HANDLE 		0x002c
-#define SPEED_HANDLE				0x0012
-#define LINK_LOSS					0x1803 // UUID. We don't know the exact handle. 
-
 #define WHEEL_REVOLUTIONS_PRESENT	0x01
 #define CRANK_REVOLUTIONS_PRESENT	0x02
 
@@ -21,25 +17,22 @@
 #define PI	3.14
 
 //unsigned char 	data[15];
-uint32_t 	wheel_revolutions;
-uint16_t	last_wheel_rev_time;
-uint32_t 	prev_wheel_revolutions;
+uint32_t 	curr_wheel_revs;
+uint16_t	last_wheel_event;
+uint32_t 	prev_wheel_revs;
 uint16_t	mydifftime;
-uint32_t        num_wheel_revolutions;
-uint32_t 	num_crank_revolutions;
-uint32_t	crank_revolutions;
-uint32_t	last_crank_rev_time;
-uint32_t	prev_crank_revolutions;
+
+uint32_t    num_wheel_revolutions;
+uint32_t 	
 uint32_t	prev_last_wheel_rev_time;
 uint32_t	prev_last_crank_rev_time;
 uint16_t 	mycranktime;
-uint8_t         flags;
+uint8_t     flags;
 float 		distance;
 uint32_t 	speed;
 float		total_distance;
 uint8_t		battery_level;
 unsigned char pdu[16];
-uint16_t handle;
 
 void generate_html_page() {
 
@@ -76,10 +69,6 @@ void generate_html_page() {
   fprintf (fp,"<th>Vehicle ID</th>");
   fprintf (fp,"<th>%d</th>", VEHICLEID);
   fprintf (fp,"</tr>\n<tr>");
-  fprintf (fp,"<th>Handle: </th>");
-  fprintf (fp,"<th>%d</th>", handle);
-  fprintf (fp,"</tr>\n<tr>");
-
   fprintf (fp,"<th>Cummulative Wheel Revolutions</th>");
   fprintf (fp,"<th>%d</th>\n</tr>", wheel_revolutions );
   fprintf (fp,"<tr>\n<th>DiffTime w.r.t Last Rev Event</th>");
@@ -159,7 +148,7 @@ int main(int argc, char *argv[]) {
 				Handle 			--->	0x0012
 				Characteristic	--->	2A5B
 	*/
-	//uint16_t handle;
+	uint16_t handle;
 	handle = get_le16(&pdu[3]);
 	printf("Handle we are accessing data from is :%04x \n", handle);
 	/* We can use this Handle to process what data is coming in */
