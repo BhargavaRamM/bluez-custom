@@ -1,24 +1,24 @@
-#include <zmq.h>
+//#include <zmq.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-//#include <sys/socket.h>
-//#include <netinet/in.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <unistd.h>
-//#include <netdb.h>
+#include <netdb.h>
 #include "util.h"
 
 #define BATTERY_LEVEL_HANDLE 		0x002c
-#define SPEED_HANDLE				0x0012
-#define LINK_LOSS					0x1803 // UUID. We don't know the exact handle. 
+#define SPEED_HANDLE			0x0012
+#define LINK_LOSS			0x1803 // UUID. We don't know the exact handle. 
 
 #define WHEEL_REVOLUTIONS_PRESENT	0x01
 #define CRANK_REVOLUTIONS_PRESENT	0x02
 
-#define VEHICLEID 1
-#define PI	3.14
+#define VEHICLEID 	1
+#define PI		3.14
 
 //unsigned char 	data[15];
 uint32_t 	wheel_revolutions;
@@ -26,20 +26,14 @@ uint16_t	last_wheel_rev_time;
 uint32_t 	prev_wheel_revolutions;
 uint16_t	mydifftime;
 uint32_t        num_wheel_revolutions;
-uint32_t 	num_crank_revolutions;
-uint32_t	crank_revolutions;
-uint32_t	last_crank_rev_time;
-uint32_t	prev_crank_revolutions;
 uint32_t	prev_last_wheel_rev_time;
-uint32_t	prev_last_crank_rev_time;
-uint16_t 	mycranktime;
 uint8_t         flags;
 float 		distance;
 uint32_t 	speed;
 float		total_distance;
 uint8_t		battery_level;
-unsigned char pdu[16];
-uint16_t handle;
+unsigned char 	pdu[16];
+uint16_t 	handle;
 
 void generate_html_page() {
 
@@ -53,11 +47,10 @@ void generate_html_page() {
   fprintf (fp,"function refresh() {\n");
   fprintf (fp,"\tsetTimeout(function () {\n");
   fprintf (fp,"\tlocation.reload()\n");
-  fprintf (fp,"\t}, 100);\n");
+  fprintf (fp,"\t}, 1000);\n");
   fprintf (fp,"}\n");
   fprintf (fp,"</script>\n");
-  fprintf (fp,"<br> <p>\n");
-  
+  fprintf (fp,"<br> <p>\n");  
   fprintf (fp,"<head>\n");
   fprintf (fp,"<style>\n");
   fprintf (fp,"<center>\n");
@@ -71,15 +64,15 @@ void generate_html_page() {
   fprintf (fp,"}\n");
   fprintf (fp,"</style>\n");
   fprintf (fp,"</head>\n");
+
   fprintf (fp,"<table style=""width:100%"">");
   fprintf (fp,"<tr>");
   fprintf (fp,"<th>Vehicle ID</th>");
   fprintf (fp,"<th>%d</th>", VEHICLEID);
   fprintf (fp,"</tr>\n<tr>");
   fprintf (fp,"<th>Handle: </th>");
-  fprintf (fp,"<th>%d</th>", handle);
+  fprintf (fp,"<th>%04x</th>", handle);
   fprintf (fp,"</tr>\n<tr>");
-
   fprintf (fp,"<th>Cummulative Wheel Revolutions</th>");
   fprintf (fp,"<th>%d</th>\n</tr>", wheel_revolutions );
   fprintf (fp,"<tr>\n<th>DiffTime w.r.t Last Rev Event</th>");
@@ -98,6 +91,7 @@ void generate_html_page() {
   fprintf (fp,"<th>Speed </th>");
   fprintf (fp,"<th>%d</th>", speed);
   fprintf (fp,"</tr>\n<tr>");
+/*
   fprintf (fp,"<th>Cummulative Crank Revolutions </th>");
   fprintf (fp,"<th>%d</th>", crank_revolutions);
   fprintf (fp,"</tr>\n<tr>");
@@ -107,6 +101,7 @@ void generate_html_page() {
   fprintf (fp,"<th>Num of Crank Revolutions </th>");
   fprintf (fp,"<th>%d</th>", crank_revolutions);
   fprintf (fp,"</tr>\n<tr>");
+  */
   fprintf (fp,"<th>Battery Level</th>");
   fprintf (fp,"<th>%d</th>", battery_level);
   fprintf (fp,"</tr>\n<tr>");
@@ -123,17 +118,18 @@ void generate_html_page() {
 
 int main(int argc, char *argv[]) {
 
-  int i;
+  int i,k;
   void *context = zmq_ctx_new ();
   void * responder = zmq_socket (context, ZMQ_REP);
-  int rc = zmq_bind (responder, "tcp://*:5556");
+  int rc = zmq_bind (responder, "tcp://\*:5556");
   assert (rc == 0);
   uint16_t plen;
- 
+  uint16_t bl_len;
+  uint8_t* value;
   while(1) {
 	memset(pdu, 0, sizeof(pdu));
 	zmq_recv (responder, pdu, sizeof(pdu), 0);
-	
+
 	printf ("Data Received at the server...\n");
 	for (i = 0; i < 16; i++) {
 		printf("%02x ",pdu[i]);
@@ -166,9 +162,7 @@ int main(int argc, char *argv[]) {
 	/* The following code is assuming the packet arrived has the lenght of the pdu itself */
 	switch(handle) {
 		case BATTERY_LEVEL_HANDLE:
-			uint8_t* value;
-			int k;
-			uint16_t bl_len;
+	//		int k;
 			bl_len = plen-3;
 			if(bl_len < 0) {
 				perror("Protocol Error... Data is not present in the arrived packet.\n");
@@ -182,7 +176,6 @@ int main(int argc, char *argv[]) {
 				battery_level = value[0];
 			}
 			break;
-		
 		case SPEED_HANDLE:
 			/* 
 				Still this function doesn't handle the following:
@@ -220,7 +213,7 @@ int main(int argc, char *argv[]) {
 		case LINK_LOSS:
 			printf("This device supports link loss and we can get data about RSSI.\n");
 			break;
-		case default:
+		default:
 			printf("The handle doesn't contain any required data... \n");
 			break;
 	}

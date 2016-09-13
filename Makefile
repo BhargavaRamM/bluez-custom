@@ -2017,13 +2017,13 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/pi/Downloads/bluez-5.41/missing aclocal-1.14
+ACLOCAL = ${SHELL} /home/pi/bluez-custom/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = ar
-AUTOCONF = ${SHELL} /home/pi/Downloads/bluez-5.41/missing autoconf
-AUTOHEADER = ${SHELL} /home/pi/Downloads/bluez-5.41/missing autoheader
-AUTOMAKE = ${SHELL} /home/pi/Downloads/bluez-5.41/missing automake-1.14
+AUTOCONF = ${SHELL} /home/pi/bluez-custom/missing autoconf
+AUTOHEADER = ${SHELL} /home/pi/bluez-custom/missing autoheader
+AUTOMAKE = ${SHELL} /home/pi/bluez-custom/missing automake-1.14
 AWK = mawk
 BACKTRACE_CFLAGS = 
 BACKTRACE_LIBS = 
@@ -2050,8 +2050,8 @@ ECHO_T =
 EGREP = /bin/grep -E
 EXEEXT = 
 FGREP = /bin/grep -F
-GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include 
-GLIB_LIBS = -lglib-2.0 
+GLIB_CFLAGS = -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include 
+GLIB_LIBS = -L/usr/local/lib -lglib-2.0 
 GREP = /bin/grep
 GTHREAD_CFLAGS = 
 GTHREAD_LIBS = 
@@ -2071,7 +2071,7 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS = 
 MAINT = #
-MAKEINFO = ${SHELL} /home/pi/Downloads/bluez-5.41/missing makeinfo
+MAKEINFO = ${SHELL} /home/pi/bluez-custom/missing makeinfo
 MANIFEST_TOOL = :
 MISC_CFLAGS = 
 MISC_LDFLAGS = 
@@ -2109,10 +2109,10 @@ UDEV_DIR = /lib/udev
 UDEV_LIBS = -ludev 
 VERSION = 5.41
 WARNING_CFLAGS = 
-abs_builddir = /home/pi/Downloads/bluez-5.41
-abs_srcdir = /home/pi/Downloads/bluez-5.41
-abs_top_builddir = /home/pi/Downloads/bluez-5.41
-abs_top_srcdir = /home/pi/Downloads/bluez-5.41
+abs_builddir = /home/pi/bluez-custom
+abs_srcdir = /home/pi/bluez-custom
+abs_top_builddir = /home/pi/bluez-custom
+abs_top_srcdir = /home/pi/bluez-custom
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -2144,7 +2144,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include/bluetooth
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/pi/Downloads/bluez-5.41/install-sh
+install_sh = ${SHELL} /home/pi/bluez-custom/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec/bluetooth
 localedir = ${datarootdir}/locale
@@ -2240,7 +2240,7 @@ EXTRA_DIST = src/bluetooth.service.in src/org.bluez.service \
 	$(manual_pages:.1=.txt)
 include_HEADERS = $(am__append_1)
 AM_CFLAGS = $(WARNING_CFLAGS) $(MISC_CFLAGS) $(am__append_32) \
-	-I/usr/include/dbus-1.0 -I/usr/lib/arm-linux-gnueabihf/dbus-1.0/include  -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include  $(am__empty)
+	-I/usr/include/dbus-1.0 -I/usr/lib/arm-linux-gnueabihf/dbus-1.0/include  -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include  $(am__empty)
 AM_LDFLAGS = $(MISC_LDFLAGS)
 dbusdir = /etc/dbus-1/system.d
 dbus_DATA = src/bluetooth.conf
@@ -2397,7 +2397,7 @@ src_bluetoothd_SOURCES = $(builtin_sources) \
 src_bluetoothd_LDADD = lib/libbluetooth-internal.la \
 			gdbus/libgdbus-internal.la \
 			src/libshared-glib.la \
-			 -lglib-2.0  -ldbus-1  -ldl -lrt
+			 -L/usr/local/lib -lglib-2.0  -ldbus-1  -ldl -lrt
 
 src_bluetoothd_LDFLAGS = $(AM_LDFLAGS) -Wl,--export-dynamic \
 				-Wl,--version-script=$(srcdir)/src/bluetooth.ver
@@ -2442,7 +2442,7 @@ client_bluetoothctl_SOURCES = client/main.c \
 					client/gatt.h client/gatt.c \
 					monitor/uuid.h monitor/uuid.c
 
-client_bluetoothctl_LDADD = gdbus/libgdbus-internal.la -lglib-2.0  -ldbus-1  \
+client_bluetoothctl_LDADD = gdbus/libgdbus-internal.la -L/usr/local/lib -lglib-2.0  -ldbus-1  \
 				-lreadline
 
 monitor_btmon_SOURCES = monitor/main.c monitor/bt.h \
@@ -2508,7 +2508,7 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #				emulator/smp.c
 
 #tools_mgmt_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #tools_l2cap_tester_SOURCES = tools/l2cap-tester.c monitor/bt.h \
 #				emulator/hciemu.h emulator/hciemu.c \
@@ -2517,7 +2517,7 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #				emulator/smp.c
 
 #tools_l2cap_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #tools_rfcomm_tester_SOURCES = tools/rfcomm-tester.c monitor/bt.h \
 #				emulator/hciemu.h emulator/hciemu.c \
@@ -2526,7 +2526,7 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #				emulator/smp.c
 
 #tools_rfcomm_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #tools_bnep_tester_SOURCES = tools/bnep-tester.c monitor/bt.h \
 #				emulator/hciemu.h emulator/hciemu.c \
@@ -2535,7 +2535,7 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #				emulator/smp.c
 
 #tools_bnep_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #tools_smp_tester_SOURCES = tools/smp-tester.c monitor/bt.h \
 #				emulator/hciemu.h emulator/hciemu.c \
@@ -2544,7 +2544,7 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #				emulator/smp.c
 
 #tools_smp_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #tools_gap_tester_SOURCES = tools/gap-tester.c monitor/bt.h \
 #				emulator/hciemu.h emulator/hciemu.c \
@@ -2555,7 +2555,7 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #tools_gap_tester_LDADD = lib/libbluetooth-internal.la \
 #				gdbus/libgdbus-internal.la \
 #				src/libshared-glib.la \
-#				-lglib-2.0  -ldbus-1 
+#				-L/usr/local/lib -lglib-2.0  -ldbus-1 
 
 #tools_sco_tester_SOURCES = tools/sco-tester.c monitor/bt.h \
 #				emulator/hciemu.h emulator/hciemu.c \
@@ -2564,10 +2564,10 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #				emulator/smp.c
 
 #tools_sco_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #tools_hci_tester_SOURCES = tools/hci-tester.c monitor/bt.h
-#tools_hci_tester_LDADD = src/libshared-glib.la -lglib-2.0 
+#tools_hci_tester_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 #tools_userchan_tester_SOURCES = tools/userchan-tester.c monitor/bt.h \
 #				emulator/hciemu.h emulator/hciemu.c \
 #				emulator/btdev.h emulator/btdev.c \
@@ -2575,7 +2575,7 @@ monitor_btmon_LDADD = lib/libbluetooth-internal.la \
 #				emulator/smp.c
 
 #tools_userchan_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 tools_hciattach_SOURCES = tools/hciattach.c tools/hciattach.h \
 						tools/hciattach_st.c \
@@ -2623,7 +2623,7 @@ tools_rctest_LDADD = lib/libbluetooth-internal.la
 tools_l2test_LDADD = lib/libbluetooth-internal.la
 tools_l2ping_LDADD = lib/libbluetooth-internal.la
 tools_sdptool_SOURCES = tools/sdptool.c src/sdp-xml.h src/sdp-xml.c
-tools_sdptool_LDADD = lib/libbluetooth-internal.la -lglib-2.0 
+tools_sdptool_LDADD = lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 tools_ciptool_LDADD = lib/libbluetooth-internal.la
 tools_bccmd_SOURCES = tools/bccmd.c tools/csr.h tools/csr.c \
 			tools/csr_hci.c tools/csr_usb.c \
@@ -2635,7 +2635,7 @@ tools_bluemoon_SOURCES = tools/bluemoon.c monitor/bt.h
 tools_bluemoon_LDADD = src/libshared-mainloop.la
 tools_hex2hcd_SOURCES = tools/hex2hcd.c
 tools_mpris_proxy_SOURCES = tools/mpris-proxy.c
-tools_mpris_proxy_LDADD = gdbus/libgdbus-internal.la -lglib-2.0  -ldbus-1 
+tools_mpris_proxy_LDADD = gdbus/libgdbus-internal.la -L/usr/local/lib -lglib-2.0  -ldbus-1 
 udevdir = /lib/udev
 tools_hid2hci_LDADD = -ludev 
 #tools_bdaddr_SOURCES = tools/bdaddr.c src/oui.h src/oui.c
@@ -2655,19 +2655,19 @@ tools_hid2hci_LDADD = -ludev
 #tools_btproxy_SOURCES = tools/btproxy.c monitor/bt.h
 #tools_btproxy_LDADD = src/libshared-mainloop.la
 #tools_btiotest_SOURCES = tools/btiotest.c btio/btio.h btio/btio.c
-#tools_btiotest_LDADD = lib/libbluetooth-internal.la -lglib-2.0 
+#tools_btiotest_LDADD = lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 #tools_mcaptest_SOURCES = tools/mcaptest.c \
 #				btio/btio.h btio/btio.c \
 #				src/log.c src/log.h \
 #				profiles/health/mcap.h profiles/health/mcap.c
 
-#tools_mcaptest_LDADD = lib/libbluetooth-internal.la -lglib-2.0  -lrt
+#tools_mcaptest_LDADD = lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0  -lrt
 #tools_bneptest_SOURCES = tools/bneptest.c \
 #				btio/btio.h btio/btio.c \
 #				src/log.h src/log.c \
 #				profiles/network/bnep.h profiles/network/bnep.c
 
-#tools_bneptest_LDADD = lib/libbluetooth-internal.la -lglib-2.0 
+#tools_bneptest_LDADD = lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 #tools_cltest_SOURCES = tools/cltest.c
 #tools_cltest_LDADD = lib/libbluetooth-internal.la src/libshared-mainloop.la
 #tools_oobtest_SOURCES = tools/oobtest.c
@@ -2694,38 +2694,38 @@ attrib_gatttool_SOURCES = attrib/gatttool.c attrib/att.c attrib/gatt.c \
 				client/display.h
 
 attrib_gatttool_LDADD = lib/libbluetooth-internal.la \
-			src/libshared-glib.la -lglib-2.0  -lreadline
+			src/libshared-glib.la -L/usr/local/lib -lglib-2.0  -lreadline
 
 tools_obex_client_tool_SOURCES = $(gobex_sources) $(btio_sources) \
 						tools/obex-client-tool.c
 
 tools_obex_client_tool_LDADD = lib/libbluetooth-internal.la \
-						-lglib-2.0  -lreadline
+						-L/usr/local/lib -lglib-2.0  -lreadline
 
 tools_obex_server_tool_SOURCES = $(gobex_sources) $(btio_sources) \
 						tools/obex-server-tool.c
 
-tools_obex_server_tool_LDADD = lib/libbluetooth-internal.la -lglib-2.0 
+tools_obex_server_tool_LDADD = lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 tools_bluetooth_player_SOURCES = tools/bluetooth-player.c \
 				client/display.h client/display.c
 
 tools_bluetooth_player_LDADD = gdbus/libgdbus-internal.la \
-				-lglib-2.0  -ldbus-1  -lreadline
+				-L/usr/local/lib -lglib-2.0  -ldbus-1  -lreadline
 
 tools_obexctl_SOURCES = tools/obexctl.c \
 				client/display.h client/display.c
 
 tools_obexctl_LDADD = gdbus/libgdbus-internal.la \
-				-lglib-2.0  -ldbus-1  -lreadline
+				-L/usr/local/lib -lglib-2.0  -ldbus-1  -lreadline
 
 tools_btmgmt_SOURCES = tools/btmgmt.c src/uuid-helper.c client/display.c
 tools_btmgmt_LDADD = lib/libbluetooth-internal.la src/libshared-mainloop.la \
 				-lreadline
 
 #tools_gatt_service_SOURCES = tools/gatt-service.c
-#tools_gatt_service_LDADD = -lglib-2.0  -ldbus-1  gdbus/libgdbus-internal.la
+#tools_gatt_service_LDADD = -L/usr/local/lib -lglib-2.0  -ldbus-1  gdbus/libgdbus-internal.la
 #profiles_iap_iapd_SOURCES = profiles/iap/main.c
-#profiles_iap_iapd_LDADD = gdbus/libgdbus-internal.la -lglib-2.0  -ldbus-1 
+#profiles_iap_iapd_LDADD = gdbus/libgdbus-internal.la -L/usr/local/lib -lglib-2.0  -ldbus-1 
 cupsdir = $(libdir)/cups/backend
 profiles_cups_bluetooth_SOURCES = profiles/cups/main.c \
 					profiles/cups/cups.h \
@@ -2733,7 +2733,7 @@ profiles_cups_bluetooth_SOURCES = profiles/cups/main.c \
 					profiles/cups/spp.c \
 					profiles/cups/hcrp.c
 
-profiles_cups_bluetooth_LDADD = -lglib-2.0  -ldbus-1  \
+profiles_cups_bluetooth_LDADD = -L/usr/local/lib -lglib-2.0  -ldbus-1  \
 				lib/libbluetooth-internal.la \
 				gdbus/libgdbus-internal.la
 
@@ -2780,10 +2780,10 @@ obexd_src_obexd_SOURCES = $(btio_sources) $(gobex_sources) \
 
 obexd_src_obexd_LDADD = lib/libbluetooth-internal.la \
 			gdbus/libgdbus-internal.la \
-			-lical -licalss -licalvcal -lpthread  -ldbus-1  -lglib-2.0  -ldl
+			-lical -licalss -licalvcal -lpthread  -ldbus-1  -L/usr/local/lib -lglib-2.0  -ldl
 
 obexd_src_obexd_LDFLAGS = -Wl,--export-dynamic
-obexd_src_obexd_CFLAGS = $(AM_CFLAGS) -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include  -I/usr/include/dbus-1.0 -I/usr/lib/arm-linux-gnueabihf/dbus-1.0/include  \
+obexd_src_obexd_CFLAGS = $(AM_CFLAGS) -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include  -I/usr/include/dbus-1.0 -I/usr/lib/arm-linux-gnueabihf/dbus-1.0/include  \
 				 -DOBEX_PLUGIN_BUILTIN \
 				-DPLUGINDIR=\""$(obex_plugindir)"\" \
 				-fPIC -D_FILE_OFFSET_BITS=64
@@ -2796,7 +2796,7 @@ nodist_obexd_src_obexd_SOURCES = $(obexd_builtin_files)
 #android_system_emulator_SOURCES = android/system-emulator.c
 #android_system_emulator_LDADD = src/libshared-mainloop.la
 #android_bluetoothd_snoop_SOURCES = android/bluetoothd-snoop.c src/log.c
-#android_bluetoothd_snoop_LDADD = src/libshared-mainloop.la -lglib-2.0 
+#android_bluetoothd_snoop_LDADD = src/libshared-mainloop.la -L/usr/local/lib -lglib-2.0 
 #android_bluetoothd_SOURCES = android/main.c \
 #				src/log.c \
 #				android/hal-msg.h \
@@ -2841,7 +2841,7 @@ nodist_obexd_src_obexd_SOURCES = $(obexd_builtin_files)
 #				profiles/network/bnep.h profiles/network/bnep.c
 
 #android_bluetoothd_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #android_bluetooth_default_la_SOURCES = android/hal.h android/hal-bluetooth.c \
 #					android/hal-socket.c \
@@ -2889,7 +2889,7 @@ nodist_obexd_src_obexd_SOURCES = $(obexd_builtin_files)
 #				android/avdtp.h android/avdtp.c
 
 #android_avdtptest_CFLAGS = $(AM_CFLAGS)
-#android_avdtptest_LDADD = lib/libbluetooth-internal.la -lglib-2.0 
+#android_avdtptest_LDADD = lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 #android_haltest_SOURCES = android/client/haltest.c \
 #				android/client/pollhandler.h \
 #				android/client/pollhandler.c \
@@ -2942,7 +2942,7 @@ nodist_obexd_src_obexd_SOURCES = $(obexd_builtin_files)
 #				-DPLUGINDIR=\""$(android_plugindir)"\"
 
 #android_android_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #android_android_tester_LDFLAGS = -pthread -ldl
 #android_ipc_tester_SOURCES = emulator/hciemu.h emulator/hciemu.c \
@@ -2954,7 +2954,7 @@ nodist_obexd_src_obexd_SOURCES = $(obexd_builtin_files)
 
 #android_ipc_tester_CFLAGS = $(AM_CFLAGS) -I$(srcdir)/android
 #android_ipc_tester_LDADD = lib/libbluetooth-internal.la \
-#				src/libshared-glib.la -lglib-2.0 
+#				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 #android_audio_a2dp_default_la_SOURCES = android/audio-msg.h \
 #					android/hal-msg.h \
@@ -2994,7 +2994,7 @@ nodist_obexd_src_obexd_SOURCES = $(obexd_builtin_files)
 #				android/ipc-common.h \
 #				android/ipc.c android/ipc.h
 
-#android_test_ipc_LDADD = src/libshared-glib.la -lglib-2.0 
+#android_test_ipc_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 rulesdir = /lib/udev/rules.d
 rules_DATA = tools/97-hid2hci.rules
 #testdir = $(pkglibdir)/test
@@ -3002,87 +3002,87 @@ rules_DATA = tools/97-hid2hci.rules
 AM_CPPFLAGS = -I$(builddir)/lib
 unit_test_eir_SOURCES = unit/test-eir.c src/eir.c src/uuid-helper.c
 unit_test_eir_LDADD = src/libshared-glib.la lib/libbluetooth-internal.la \
-								-lglib-2.0 
+								-L/usr/local/lib -lglib-2.0 
 
 unit_test_uuid_SOURCES = unit/test-uuid.c
 unit_test_uuid_LDADD = src/libshared-glib.la lib/libbluetooth-internal.la \
-								-lglib-2.0 
+								-L/usr/local/lib -lglib-2.0 
 
 unit_test_textfile_SOURCES = unit/test-textfile.c src/textfile.h src/textfile.c
-unit_test_textfile_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_textfile_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_crc_SOURCES = unit/test-crc.c monitor/crc.h monitor/crc.c
-unit_test_crc_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_crc_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_crypto_SOURCES = unit/test-crypto.c
-unit_test_crypto_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_crypto_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_ecc_SOURCES = unit/test-ecc.c
-unit_test_ecc_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_ecc_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_ringbuf_SOURCES = unit/test-ringbuf.c
-unit_test_ringbuf_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_ringbuf_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_queue_SOURCES = unit/test-queue.c
-unit_test_queue_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_queue_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_mgmt_SOURCES = unit/test-mgmt.c
-unit_test_mgmt_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_mgmt_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_uhid_SOURCES = unit/test-uhid.c
-unit_test_uhid_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_uhid_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_sdp_SOURCES = unit/test-sdp.c \
 				src/sdpd.h src/sdpd-database.c \
 				src/log.h src/log.c \
 				src/sdpd-service.c src/sdpd-request.c
 
 unit_test_sdp_LDADD = lib/libbluetooth-internal.la \
-				src/libshared-glib.la -lglib-2.0 
+				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 unit_test_avdtp_SOURCES = unit/test-avdtp.c \
 				src/log.h src/log.c \
 				android/avdtp.c android/avdtp.h
 
-unit_test_avdtp_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_avdtp_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_avctp_SOURCES = unit/test-avctp.c \
 				src/log.h src/log.c \
 				android/avctp.c android/avctp.h
 
-unit_test_avctp_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_avctp_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_avrcp_SOURCES = unit/test-avrcp.c \
 				src/log.h src/log.c \
 				android/avctp.c android/avctp.h \
 				android/avrcp-lib.c android/avrcp-lib.h
 
 unit_test_avrcp_LDADD = lib/libbluetooth-internal.la \
-				src/libshared-glib.la -lglib-2.0 
+				src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 
 unit_test_hfp_SOURCES = unit/test-hfp.c
-unit_test_hfp_LDADD = src/libshared-glib.la -lglib-2.0 
+unit_test_hfp_LDADD = src/libshared-glib.la -L/usr/local/lib -lglib-2.0 
 unit_test_gdbus_client_SOURCES = unit/test-gdbus-client.c
 unit_test_gdbus_client_LDADD = gdbus/libgdbus-internal.la \
-				src/libshared-glib.la -lglib-2.0  -ldbus-1 
+				src/libshared-glib.la -L/usr/local/lib -lglib-2.0  -ldbus-1 
 
 unit_test_gobex_SOURCES = $(gobex_sources) unit/util.c unit/util.h \
 						unit/test-gobex.c
 
-unit_test_gobex_LDADD = -lglib-2.0 
+unit_test_gobex_LDADD = -L/usr/local/lib -lglib-2.0 
 unit_test_gobex_packet_SOURCES = $(gobex_sources) unit/util.c unit/util.h \
 						unit/test-gobex-packet.c
 
-unit_test_gobex_packet_LDADD = -lglib-2.0 
+unit_test_gobex_packet_LDADD = -L/usr/local/lib -lglib-2.0 
 unit_test_gobex_header_SOURCES = $(gobex_sources) unit/util.c unit/util.h \
 						unit/test-gobex-header.c
 
-unit_test_gobex_header_LDADD = -lglib-2.0 
+unit_test_gobex_header_LDADD = -L/usr/local/lib -lglib-2.0 
 unit_test_gobex_transfer_SOURCES = $(gobex_sources) unit/util.c unit/util.h \
 						unit/test-gobex-transfer.c
 
-unit_test_gobex_transfer_LDADD = -lglib-2.0 
+unit_test_gobex_transfer_LDADD = -L/usr/local/lib -lglib-2.0 
 unit_test_gobex_apparam_SOURCES = $(gobex_sources) unit/util.c unit/util.h \
 						unit/test-gobex-apparam.c
 
-unit_test_gobex_apparam_LDADD = -lglib-2.0 
+unit_test_gobex_apparam_LDADD = -L/usr/local/lib -lglib-2.0 
 unit_test_lib_SOURCES = unit/test-lib.c
 unit_test_lib_LDADD = src/libshared-glib.la \
-				lib/libbluetooth-internal.la -lglib-2.0 
+				lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 
 unit_test_gatt_SOURCES = unit/test-gatt.c
 unit_test_gatt_LDADD = src/libshared-glib.la \
-				lib/libbluetooth-internal.la -lglib-2.0 
+				lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 
 unit_test_hog_SOURCES = unit/test-hog.c \
 			$(btio_sources) \
@@ -3096,12 +3096,12 @@ unit_test_hog_SOURCES = unit/test-hog.c \
 			attrib/gattrib.h attrib/gattrib.c
 
 unit_test_hog_LDADD = src/libshared-glib.la \
-				lib/libbluetooth-internal.la -lglib-2.0 
+				lib/libbluetooth-internal.la -L/usr/local/lib -lglib-2.0 
 
 unit_test_gattrib_SOURCES = unit/test-gattrib.c attrib/gattrib.c $(btio_sources) src/log.h src/log.c
 unit_test_gattrib_LDADD = lib/libbluetooth-internal.la \
 			src/libshared-glib.la \
-			-lglib-2.0  -ldbus-1  -ldl -lrt
+			-L/usr/local/lib -lglib-2.0  -ldbus-1  -ldl -lrt
 
 AM_TESTS_ENVIRONMENT = MALLOC_CHECK_=3 MALLOC_PERTURB_=69 \
 	$(am__append_38)

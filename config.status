@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/pi/Downloads/bluez-5.41'
+ac_pwd='/home/pi/bluez-custom'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -874,8 +874,8 @@ S["DBUS_LIBS"]="-ldbus-1 "
 S["DBUS_CFLAGS"]="-I/usr/include/dbus-1.0 -I/usr/lib/arm-linux-gnueabihf/dbus-1.0/include "
 S["GTHREAD_LIBS"]=""
 S["GTHREAD_CFLAGS"]=""
-S["GLIB_LIBS"]="-lglib-2.0 "
-S["GLIB_CFLAGS"]="-I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include "
+S["GLIB_LIBS"]="-L/usr/local/lib -lglib-2.0 "
+S["GLIB_CFLAGS"]="-I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include "
 S["MISC_LDFLAGS"]=""
 S["MISC_CFLAGS"]=""
 S["VALGRIND_FALSE"]=""
@@ -955,12 +955,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
-S["install_sh"]="${SHELL} /home/pi/Downloads/bluez-5.41/install-sh"
-S["MAKEINFO"]="${SHELL} /home/pi/Downloads/bluez-5.41/missing makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/pi/Downloads/bluez-5.41/missing autoheader"
-S["AUTOMAKE"]="${SHELL} /home/pi/Downloads/bluez-5.41/missing automake-1.14"
-S["AUTOCONF"]="${SHELL} /home/pi/Downloads/bluez-5.41/missing autoconf"
-S["ACLOCAL"]="${SHELL} /home/pi/Downloads/bluez-5.41/missing aclocal-1.14"
+S["install_sh"]="${SHELL} /home/pi/bluez-custom/install-sh"
+S["MAKEINFO"]="${SHELL} /home/pi/bluez-custom/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/pi/bluez-custom/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/pi/bluez-custom/missing automake-1.14"
+S["AUTOCONF"]="${SHELL} /home/pi/bluez-custom/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/pi/bluez-custom/missing aclocal-1.14"
 S["VERSION"]="5.41"
 S["PACKAGE"]="bluez"
 S["CYGPATH_W"]="echo"
