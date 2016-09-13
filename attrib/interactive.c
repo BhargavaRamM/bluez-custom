@@ -56,7 +56,8 @@
 #include "client/display.h"
 
 #define PORT "3490"
-#define MAX_DATA_SIZE 256
+#define VEHICLE		1
+#define DIAMETER	0.508
 
 #define WHEEL_REV_SUPPORT		0x01
 #define CRANK_REV_SUPPORT		0x02
@@ -149,12 +150,13 @@ uint32_t	last_crank_rev_time;
 uint32_t	prev_crank_revolutions;
 uint32_t	prev_last_crank_rev_time;
 uint16_t 	mycranktime;
-
+uint8_t		vehicle_id;
+float		diameter;
 
 int sock;
 struct sockaddr_in server;
 struct hostent *host;
-unsigned char buff[16];
+unsigned char buff[21];
 
 
 static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
@@ -169,6 +171,10 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 	data_len = len-3;
 	struct cscvalues val;
 	uint8_t flags;
+	vehicle_id = VEHICLE;
+	diameter = DIAMETER;
+	printf("The vehicle Id is: %d\n",vehicle_id);
+	printf("Diameter of the vehicle wheel is: %.2f\n",diameter);
 
 
 	switch (pdu[0]) {
@@ -176,15 +182,16 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 		s = g_string_new(NULL);
 		g_string_printf(s, "Notification handle = 0x%04x value at handle is : ",
 									handle);
-		buff[0]  = (len & 0xFF);
-		buff[1] = (len >> 8) & 0x00FF;
-		printf ("Length : %02x %02x\n ",buff[0], buff[1]);
-		for (i = 2; i < len+2; i++){
-		  buff[i] = pdu[i-2];
+		memcpy(buff,&diameter,sizeof(float));
+		buff[4] = vehicle_id;
+		buff[5]  = (len & 0xFF);
+		buff[6] = (len >> 8) & 0x00FF;
+		printf("The vehicle Id is: %d\n",buff[4]);
+		printf ("Length : %02x %02x\n ",buff[5], buff[6]);
+		for (i = 7; i < len+7; i++){
+		  buff[i] = pdu[i-7];
 		  g_print ("%02x ",buff[i]);
 		}
-		
-
 		break;
 	case ATT_OP_HANDLE_IND:
 		s = g_string_new(NULL);
@@ -198,21 +205,21 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 	for (i = 3; i < len; i++) {
 		g_string_append_printf(s, "%02x ", pdu[i]);
 	}
-	
 
+	/*
 	//printf ("Complete Packet\n");	
 	for (i = 0; i < len+2; i++){
 	  g_print ("%02x ",buff[i]);
 	}
-	
-	    
+	*/
+
         if(send(sock, buff, sizeof(buff),0) < 0) {
                 perror("Sending data failed...");
                 exit(1);
         }
 	else g_print ("Data sent\n");
 
-	
+
 	rl_printf("%s\n", s->str);
 	g_string_free(s, TRUE);
 
