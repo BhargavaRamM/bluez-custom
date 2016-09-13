@@ -56,7 +56,8 @@
 #include "client/display.h"
 
 #define PORT "3490"
-#define MAX_DATA_SIZE 256
+#define VEHICLE		1
+#define DIAMETER	0.508
 
 #define WHEEL_REV_SUPPORT		0x01
 #define CRANK_REV_SUPPORT		0x02
@@ -149,12 +150,13 @@ uint32_t	last_crank_rev_time;
 uint32_t	prev_crank_revolutions;
 uint32_t	prev_last_crank_rev_time;
 uint16_t 	mycranktime;
-
+uint8_t		vehicle_id;
+float		diameter;
 
 int sock;
 struct sockaddr_in server;
 struct hostent *host;
-unsigned char buff[16];
+unsigned char buff[21];
 
 
 static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
@@ -169,6 +171,10 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 	data_len = len-3;
 	struct cscvalues val;
 	uint8_t flags;
+	vehicle_id = VEHICLE;
+	diameter = DIAMETER;
+	printf("The vehicle Id is: %d\n",vehicle_id);
+	printf("Diameter of the vehicle wheel is: %.2f\n",diameter);
 
 
 	switch (pdu[0]) {
@@ -176,14 +182,16 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 		s = g_string_new(NULL);
 		g_string_printf(s, "Notification handle = 0x%04x value at handle is : ",
 									handle);
-		buff[0]  = (len &0xFF);
-		buff[1] = (len >> 8) & 0x00FF;
-		for (i = 2; i < len; i++){
-		  buff[i] = pdu[i];
+		memcpy(buff,&diameter,sizeof(float));
+		buff[4] = vehicle_id;
+		buff[5]  = (len & 0xFF);
+		buff[6] = (len >> 8) & 0x00FF;
+		printf("The vehicle Id is: %d\n",buff[4]);
+		printf ("Length : %02x %02x\n ",buff[5], buff[6]);
+		for (i = 7; i < len+7; i++){
+		  buff[i] = pdu[i-7];
 		  g_print ("%02x ",buff[i]);
 		}
-
-
 		break;
 	case ATT_OP_HANDLE_IND:
 		s = g_string_new(NULL);
@@ -194,123 +202,23 @@ static void events_handler(const uint8_t *pdu, uint16_t len, gpointer user_data)
 		error("Invalid opcode\n");
 		return;
 	}
-
 	for (i = 3; i < len; i++) {
 		g_string_append_printf(s, "%02x ", pdu[i]);
 	}
+
 	/*
-	flags = pdu[3];
-	if(flags & WHEEL_REVOLUTIONS_PRESENT) {
-	  wheel_revolutions = get_le32(&pdu[4]);
-	  last_wheel_rev_time = get_le16(&pdu[8]);
-
-	  g_print("wrevs: %d wrevtime: %d\n", wheel_revolutions,last_wheel_rev_time);
-
-	  mydifftime = (last_wheel_rev_time -  prev_last_wheel_rev_time)/1024;
-	  if (mydifftime > 0) {
-	    num_wheel_revolutions = wheel_revolutions - prev_wheel_revolutions;
-	    g_print ("%d Wheel Revolutions during the time : %d secs\n",num_wheel_revolutions, mydifftime);
-	    prev_last_wheel_rev_time = last_wheel_rev_time;
-	    prev_wheel_revolutions = wheel_revolutions;
-	    //Calculate speed and Distance
-	    g_print("Distance in %d time is %d \n", mydifftime, (int)(num_wheel_revolutions * 3.14 * 0.508));
-	    g_print("Speed in last %d secs is %d m/sec \n", mydifftime, (int)((num_wheel_revolutions * 3.14 * 0.508) / mydifftime));
-	  }
-	}
-	if(flags & CRANK_REVOLUTIONS_PRESENT) {
-		crank_revolutions = get_le16(&pdu[10]);\
-		last_crank_rev_time = get_le16(&pdu[12]);
-
-		g_print("Crank revs: %d crank rev time: %d\n",crank_revolutions,last_crank_rev_time);
-		mycranktime = (last_crank_rev_time - prev_last_crank_rev_time)/1024;
-		if(mycranktime > 0) {
-			num_crank_revolutions = crank_revolutions - prev_crank_revolutions;
-			g_print("%d crank revolutions during the time: %d secs \n", num_crank_revolutions, mycranktime);
-			prev_crank_revolutions = crank_revolutions;
-			prev_last_crank_rev_time = last_crank_rev_time;
-			g_print("Cadence value is %drpm:\n ",(int)(num_crank_revolutions*60));
-		}
-	}
-
-*/
-	/*
-	req_data = (uint8_t*) malloc(sizeof(uint8_t) * (len-2));
-	req_data[0] = len-3;
-        for(i = 1; i < len - 2; i++) {
-                req_data[i] = pdu[i+2];
-        }
-	data = (int* )malloc(sizeof(int) * len);
-	for(i = 0; i < len; i++) {
-		data[i] = pdu[i];
-	}
-	flags = *data;
-
-	data++;
-	data_len--;
-	memset(&val, 0, sizeof (val));
-
-	if(flags & WHEEL_REVOLUTIONS_PRESENT) {
-		if(data_len < 6) {
-			error("Wheel revolutions data missing.");
-			exit(1);
-		}
-		printf("You are in Wheel rev... \n");
-		val.wheel_rev_present = true;
-		val.wheel_revolutions = get_le32(data);
-		g_print("Wheel revolutions: %02x\n",val.wheel_revolutions);
-		val.last_wheel_rev_time = get_le16(data + 4);
-                g_print("last wheel revolution time: %02x\n",val.last_wheel_rev_time);
-		data += 6;
-		data_len -= 6;
-		val.wheel_revolutions = 0;
-		val.last_wheel_rev_time = 0;
-		g_print("Wheel Revs: %02x\n", val.wheel_revolutions);
-	}	
-
-	if(flags & CRANK_REVOLUTIONS_PRESENT) {
-		if(data_len < 4) {
-			error("Crank Revolution data missing...");
-			exit(1);
-		}
-		val.crank_rev_present = true;
-		val.crank_revolutions = get_le16(data);
-                g_print("crank revolutions: %02x\n",val.crank_revolutions);
-		val.last_crank_rev_time = get_le16(data + 2);
-                g_print("last crank revolution time: %02x\n",val.last_crank_rev_time);
-		data = data + 4;
-		data_len = data_len - 4;
-	}
-	*/
-//	printf("Values of wheel and crank revolutions are %02x and %02x:", val.wheel_revolutions, val.crank_revolutions);
-
-/*
-	for(i = 0; i < len - 2; i++) {
-		g_print("required_data is : %02x	",req_data[i]);
-	}
-
-	p_data = (int*) malloc(sizeof(int*) * (len-2));
-	for(i = 0; i< len - 2; i++) {
-		p_data[i] = (int) req_data[i];
-		printf("Normal value is :%d", p_data[i]);
-	}
-*/
-	/*
-	for (i = 0; i < len; i++){
-	  buff[i] = pdu[i];
+	//printf ("Complete Packet\n");	
+	for (i = 0; i < len+2; i++){
 	  g_print ("%02x ",buff[i]);
 	}
 	*/
-	    
+
         if(send(sock, buff, sizeof(buff),0) < 0) {
                 perror("Sending data failed...");
                 exit(1);
         }
 	else g_print ("Data sent\n");
 
-	//        close(sock);
-//	free(req_data);
-//	free(val);
-//	free(data);
 
 	rl_printf("%s\n", s->str);
 	g_string_free(s, TRUE);
@@ -599,7 +507,6 @@ static void cmd_connect(int argcp, char **argvp)
 
         server.sin_family = AF_INET;
         host = gethostbyname("localhost");
-
         if(host == 0) {
                 perror("Get host name failed...");
                 exit(1);
@@ -609,7 +516,7 @@ static void cmd_connect(int argcp, char **argvp)
         if(connect(sock, (struct sockaddr*) &server, sizeof(server)) < 0) {
                 perror("Connection failed...");
                 exit(1);
-	}
+        }
 	else printf (" Connection succesfull\n");
 
 }
@@ -725,10 +632,9 @@ static void cmd_char(int argcp, char **argvp)
 	gatt_discover_char(attrib, start, end, NULL, char_cb, NULL);
 }
 
-
-
 static void cmd_char_desc(int argcp, char **argvp)
 {
+
 	if (conn_state != STATE_CONNECTED) {
 		failed("Disconnected\n");
 		return;
